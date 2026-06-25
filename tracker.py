@@ -9,7 +9,7 @@ print(f"Using device: {device}")
 model = YOLO('yolov8s.pt')
 model.to(device)
 
-camera = cv2.VideoCapture(1)
+camera = cv2.VideoCapture(0)
 
 while camera.isOpened():
     ret, frame = camera.read()
