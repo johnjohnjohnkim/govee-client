@@ -1,13 +1,19 @@
 import cv2
 from ultralytics import YOLO
 
-cap = cv2.VideoCapture(0)
+model = YOLO('yolov8s.pt')
+model.to('cuda')
 
-while True:
-    ret, frame = cap.read()
+camera = cv2.VideoCapture(1)
+
+while camera.isOpened():
+    ret, frame = camera.read()
 
     if not ret:
         break   # No more frames -> exit loop
+
+    detections = model(frame)
+    print(detections)
 
     cv2.imshow("Video", frame)
 
@@ -16,5 +22,5 @@ while True:
         break
 
 # Release resources
-cap.release()
+camera.release()
 cv2.destroyAllWindows()
