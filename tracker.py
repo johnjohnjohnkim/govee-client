@@ -13,17 +13,19 @@ camera = cv2.VideoCapture(0)
 
 while camera.isOpened():
     ret, frame = camera.read()
-
     if not ret:
-        break   # No more frames -> exit loop
+        break
 
-    detections = model(frame)
-    print(detections)
+    # Run inference
+    results = model(frame, stream=True)
 
-    cv2.imshow("Video", frame)
+    for r in results:
+        annotated_frame = r.plot()
+        
+        # Display the annotated frame instead of the raw one
+        cv2.imshow("Video", annotated_frame)
 
-    # Press Q to quit
-    if cv2.waitKey(25) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'): # Changed to 1ms delay for smoother live video
         break
 
 # Release resources
